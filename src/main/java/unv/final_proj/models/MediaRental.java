@@ -8,7 +8,7 @@ import java.util.Comparator;
 public class MediaRental implements MediaRentalInt, Serializable {
 
 
-//    private static final long serialVersionUID = 628789568975888036L;
+    private static final long serialVersionUID = 622837298356238974L;
 
     //    This ArrayList is sorted by media title ascending
     //    Do NOT add to it except throw the addMedia method
@@ -28,7 +28,7 @@ public class MediaRental implements MediaRentalInt, Serializable {
         ObjectOutputStream oos = null;
         FileOutputStream fout = null;
         try{
-            fout = new FileOutputStream("RentalSystemState.save" );
+            fout = new FileOutputStream("RentalSystemState.save.bin" );
             oos = new ObjectOutputStream(fout);
             oos.writeObject(this);
         } catch (Exception ex) {
@@ -54,24 +54,19 @@ public class MediaRental implements MediaRentalInt, Serializable {
      * @param plan
      */
     @Override
-    public void addCustomer(String id, String mobile, String name, String address, String plan) {
+    public void addCustomer(String id, String mobile, String name, String address, String plan) throws IllegalArgumentException {
 
         Customer new_c = null;
 
-        try {
-            new_c = new Customer(id , name, address, plan, mobile);
-        }catch (IllegalArgumentException e){
-            System.err.println("Illegal Plan Type Given to MediaRental.addCustomer");
-            return;
-        }
+        new_c = new Customer(id , name, address, plan, mobile);
+
 
         int index = Collections.binarySearch(customers, new_c, Comparator.comparing(Customer::getId));
         if (index < 0) {
             index = -index - 1;
         }else{
             // Customer Already Exist
-            System.out.println("Customer with this code already exists");
-            return;
+            throw new IllegalArgumentException("Customer with this id already exists");
         }
 
         customers.add(index, new_c);
@@ -80,7 +75,31 @@ public class MediaRental implements MediaRentalInt, Serializable {
 
     }
 
-    private Customer searchCustomerByID(String ID){
+    public void editCustomer(String id, String mobile, String name, String address, PlanType plan) throws IllegalArgumentException {
+
+        Customer new_c = null;
+
+        new_c = new Customer(id , name, address, plan, mobile);
+
+
+        int index = Collections.binarySearch(customers, new_c, Comparator.comparing(Customer::getId));
+        if (index >= 0) {
+
+            customers.get(index).setMobile(mobile);
+            customers.get(index).setAddress(address);
+            customers.get(index).setName(name);
+            customers.get(index).setPlan(plan);
+
+        }else{
+            // Customer Already Exist
+            throw new IllegalArgumentException("Customer with this id doesn't");
+        }
+
+        update_file();
+
+    }
+
+    public Customer searchCustomerByID(String ID){
 
         int index = Collections.binarySearch(customers, new Customer(ID, "", "", "limited", ""), Comparator.comparing(Customer::getId));
 
@@ -91,7 +110,7 @@ public class MediaRental implements MediaRentalInt, Serializable {
         return customers.get(index);
     }
 
-    private Media searchMediaByCode(String Code){
+    public Media searchMediaByCode(String Code){
 
         int index = Collections.binarySearch(media, new Media(Code, "", 0), Comparator.comparing(Media::getCode));
 
@@ -102,7 +121,45 @@ public class MediaRental implements MediaRentalInt, Serializable {
         return media.get(index);
     }
 
-    private void addMedia(Media m) {
+    public Customer deleteCustomerByID(String ID){
+
+        int index = Collections.binarySearch(customers, new Customer(ID, "", "", "limited", ""), Comparator.comparing(Customer::getId));
+
+        if ( index < 0 ){
+            return null; // not found
+        }
+
+        customers.get(index).destroy();
+        Customer c = customers.remove(index);
+        update_file();
+        return c;
+    }
+
+    public void deleteMediaByCode(String Code){
+
+        int index = Collections.binarySearch(media, new Media(Code, "", 0), Comparator.comparing(Media::getCode));
+
+        if ( index < 0 ){
+            return; // not found
+        }
+
+        Media m = media.remove(index);
+
+        for ( Customer c:
+             customers) {
+
+            c.ReturnMedia(m.getCode());
+            c.RemoveFromCart(m.getCode());
+
+        }
+
+        media.remove(index);
+        update_file();
+    }
+
+
+
+    public void addMedia(Media m) {
 
         int index = Collections.binarySearch(media, m, Comparator.comparing(Media::getCode));
         if (index < 0) {

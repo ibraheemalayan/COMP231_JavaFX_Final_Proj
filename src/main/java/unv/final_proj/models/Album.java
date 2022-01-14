@@ -1,8 +1,12 @@
 package unv.final_proj.models;
 
+import java.io.Serial;
 import java.util.ArrayList;
 
 public class Album extends Media{
+
+    @Serial
+    private static final long serialVersionUID = 13419741974986L;
 
     private String artist;
     private String songs;

@@ -14,7 +14,7 @@ public class HomeScreen extends StackPane {
 
         this.getStylesheets().add(Main.class.getResource("home_styles.css").toExternalForm());
 
-        this.setPadding(new Insets(40, 40, 40, 40));
+        this.setPadding(new Insets(80, 80, 80, 80));
 
         this.getStyleClass().add("light-bg");
 
@@ -31,8 +31,12 @@ public class HomeScreen extends StackPane {
 
         HBox btns_pane = new HBox(80);
 
-        btns_pane.setPrefSize(960,94);
-        btns_pane.setMaxSize(960,94);
+        btns_pane.setPrefHeight(94);
+        btns_pane.minWidth(600);
+        btns_pane.setAlignment(Pos.CENTER);
+        btns_pane.prefWidthProperty().bind(main.widthProperty().divide(3).multiply(2));
+        btns_pane.maxWidthProperty().bind(main.widthProperty());
+
 
         Image img_1 = new Image(HomeScreen.class.getResourceAsStream("customers.png"));
         ImageView img = new ImageView(img_1);

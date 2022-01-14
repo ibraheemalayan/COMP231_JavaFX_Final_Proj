@@ -1,6 +1,11 @@
 package unv.final_proj.models;
 
+import java.io.Serial;
+
 public class Game extends Media{
+
+    @Serial
+    private static final long serialVersionUID = 28567023567235840L;
 
     private double weight;
 

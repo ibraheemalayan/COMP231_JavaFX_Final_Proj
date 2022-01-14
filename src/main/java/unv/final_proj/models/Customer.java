@@ -5,12 +5,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-enum PlanType {
-    LIMITED,
-    UNLIMITED
-}
-
 public class Customer implements Serializable {
+
+    private static final long serialVersionUID = 285692856298356L;
 
     public static int limited_plan_limit = 2;
 
@@ -19,6 +16,12 @@ public class Customer implements Serializable {
     private String id, mobile;
 
     private ArrayList<Media> rented, cart;
+
+    public void destroy(){
+        for (Media media : rented) {
+            this.ReturnMedia(media.Code);
+        }
+    }
 
     public Customer(String id, String name, String address, PlanType plan, String mobile){
         this.name = name;
@@ -52,6 +55,31 @@ public class Customer implements Serializable {
 
     public String getMobile() {
         return mobile;
+    }
+
+    public static int getLimited_plan_limit() {
+        return limited_plan_limit;
+    }
+
+    public static void setLimited_plan_limit(int limited_plan_limit) {
+        Customer.limited_plan_limit = limited_plan_limit;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setPlan(PlanType new_plan) {
+
+        if ( this.plan.equals(PlanType.UNLIMITED) && new_plan.equals(PlanType.LIMITED) && rented.size() > limited_plan_limit ){
+            throw new IllegalArgumentException("This customer has rented more than what the LIMITED plan allows !");
+        }
+
+        this.plan = new_plan;
     }
 
     public void setMobile(String mobile) {

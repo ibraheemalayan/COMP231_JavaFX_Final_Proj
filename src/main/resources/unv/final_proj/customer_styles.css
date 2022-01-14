@@ -13,6 +13,16 @@
     -fx-background-radius: 10px;
 }
 
+.small_btn{
+    -fx-background-color: #011627;
+    -fx-text-fill: #F2F2F2;
+    -fx-font-size: 27px;
+    -fx-pref-width: 150px;
+    -fx-pref-height: 60px;
+    -fx-cursor: hand;
+    -fx-background-radius: 10px;
+}
+
 .back-button{
     -fx-background-color: #011627;
     -fx-text-fill: #F2F2F2;

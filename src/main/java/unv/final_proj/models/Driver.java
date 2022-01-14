@@ -7,14 +7,14 @@ import java.util.ArrayList;
 
 public class Driver {
 
-    static MediaRental loadFile(){
+    public static MediaRental loadFile(){
         MediaRental sys2 = null;
 
         // Deserialization
         try
         {
             // Reading the object from a file
-            FileInputStream file = new FileInputStream("RentalSystemState.save");
+            FileInputStream file = new FileInputStream("RentalSystemState.save.bin");
             ObjectInputStream in = new ObjectInputStream(file);
 
             // Method for deserialization of object
@@ -34,6 +34,7 @@ public class Driver {
         catch(IOException ex)
         {
             System.out.println("IOException is caught");
+            ex.printStackTrace();
         }
 
         catch(ClassNotFoundException ex)

@@ -4,8 +4,6 @@ import java.io.Serializable;
 
 public class Media implements Comparable<Media>, Serializable {
 
-//    private static final long serialVersionUID = 628789568975888436L;
-
     protected String title, Code;
     protected int num_of_available_copies;
 

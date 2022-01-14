@@ -1,6 +1,11 @@
 package unv.final_proj.models;
 
+import java.io.Serial;
+
 public class Movie extends Media{
+
+    @Serial
+    private static final long serialVersionUID = 29987654987658965L;
 
     private String rating;
 

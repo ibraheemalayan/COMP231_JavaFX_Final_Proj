@@ -18,12 +18,13 @@ public class CustomersScreen extends StackPane {
         this.getStyleClass().add("light-bg");
 
         VBox all = new VBox();
+        all.setAlignment(Pos.CENTER);
 
         HBox main = new HBox();
         main.setAlignment(Pos.CENTER);
         main.setSpacing(30);
 
-        Image illustration_svg = new Image(HomeScreen.class.getResourceAsStream("customers_illustration.png"));
+        Image illustration_svg = new Image(CustomersScreen.class.getResourceAsStream("customers_illustration.png"));
         ImageView illustration = new ImageView(illustration_svg);
 
         illustration.setPreserveRatio(true);
@@ -31,6 +32,7 @@ public class CustomersScreen extends StackPane {
         illustration.fitHeightProperty().bind(main.heightProperty().divide(5).multiply(3));
 
         VBox btns_pane = new VBox(40);
+        btns_pane.setAlignment(Pos.CENTER);
 
         btns_pane.setPrefSize(300,700);
         btns_pane.setMaxSize(300,700);
@@ -103,9 +105,18 @@ public class CustomersScreen extends StackPane {
 
         this.getStyleClass().add("light-bg");
 
-//        customers_btn.setOnAction((event) -> {    // lambda expression
-//            Main.stage.setScene(Main.customers_scene);
-//        });
+        add_btn.setOnAction((event) -> {    // lambda expression
+            Main.stage.getScene().setRoot(new CustomerForm("Add"));
+        });
+        edit_btn.setOnAction((event) -> {    // lambda expression
+            Main.stage.getScene().setRoot(new CustomerForm("Edit"));
+        });
+        del_btn.setOnAction((event) -> {    // lambda expression
+            Main.stage.getScene().setRoot(new CustomerForm("Delete"));
+        });
+        search_btn.setOnAction((event) -> {    // lambda expression
+            Main.stage.getScene().setRoot(new CustomerForm("Search"));
+        });
 //
 //        media_btn.setOnAction((event) -> {    // lambda expression
 //            Main.stage.setScene(Main.media_scene);
