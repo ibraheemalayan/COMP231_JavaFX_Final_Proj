@@ -3,12 +3,48 @@
 
 }
 
-.btn{
+.text-field{
+    -fx-background-radius: 10px;
+    -fx-padding: 10px;
+    -fx-font-size: 24px;
+}
+
+.label{
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10px;
+    -fx-padding: 10px;
+    -fx-font-size: 24px;
+}
+
+.warning-label{
+    -fx-background-color: #DBC1C1;
+    -fx-background-radius: 10px;
+    -fx-padding: 10px;
+    -fx-font-size: 24px;
+    -fx-text-fill: #011627;
+}
+
+.radio-button{
+    -fx-background-color: #F2F2F2;
+    -fx-font-size: 24px;
+    -fx-padding: 8px;
+    -fx-background-radius: 10px;
+}
+
+.success-label{
+    -fx-background-color: #011627;
+    -fx-background-radius: 10px;
+    -fx-padding: 10px;
+    -fx-font-size: 24px;
+    -fx-text-fill: #F2F2F2;
+}
+
+.button{
     -fx-background-color: #BDEFEA;
     -fx-text-fill: #011627;
     -fx-font-size: 27px;
     -fx-pref-width: 300px;
-    -fx-pref-height: 94px;
+    -fx-pref-height: 60px;
     -fx-cursor: hand;
     -fx-background-radius: 10px;
 }

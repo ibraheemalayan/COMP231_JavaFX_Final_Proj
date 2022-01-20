@@ -2,6 +2,7 @@ package unv.final_proj;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import unv.final_proj.models.Driver;
 import unv.final_proj.models.MediaRental;
@@ -15,6 +16,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+
+//        TODO use BorderPane
+        BorderPane bp = new BorderPane();
 
         this.stage = stage;
 

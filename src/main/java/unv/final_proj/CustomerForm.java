@@ -18,7 +18,7 @@ public class CustomerForm extends StackPane {
 
     public CustomerForm(String Operation) {
 
-        this.getStylesheets().add(CustomerForm.class.getResource("customer_styles.css").toExternalForm());
+        this.getStylesheets().add(this.getClass().getResource("customer_form_styles.css").toExternalForm());
 
         this.setPadding(new Insets(40, 40, 40, 40));
 
@@ -40,8 +40,9 @@ public class CustomerForm extends StackPane {
 
         GridPane grid = new GridPane();
         grid.setHgap(150);
-        grid.setVgap(90);
+        grid.setVgap(40);
         grid.setAlignment(Pos.CENTER);
+        grid.getStyleClass().add("grid-pane");
 
         Text form_title = new Text(Operation + " Customer Form");
 
@@ -49,7 +50,7 @@ public class CustomerForm extends StackPane {
 
         grid.add(form_title, 0, 0, 2, 1);
 
-        Label userID = new Label("User ID:");
+        Label userID = new Label("User ID");
         grid.add(userID, 0, 1);
 
         TextField user_id_tf = new TextField();
@@ -58,7 +59,7 @@ public class CustomerForm extends StackPane {
 
 /////////////////////////////////////////////////////////////////////////////
 
-        Label userName = new Label("User Name:");
+        Label userName = new Label("User Name");
         grid.add(userName, 0, 2);
 
         TextField user_name_tf = new TextField();
@@ -70,6 +71,7 @@ public class CustomerForm extends StackPane {
                                 String newValue) {
                 if (user_id_tf.getText().length() < 1) {
                     user_name_tf.setText("Fill the ID Field !");
+
                 }
             }
         });
@@ -78,7 +80,7 @@ public class CustomerForm extends StackPane {
 
         /////////////////////////////////////////////////////////////////////////////
 
-        Label userAddress = new Label("User Address:");
+        Label userAddress = new Label("User Address");
         grid.add(userAddress, 0, 3);
 
         TextField user_addr_tf = new TextField();
@@ -98,7 +100,7 @@ public class CustomerForm extends StackPane {
 
         /////////////////////////////////////////////////////////////////////////////
 
-        Label userMobile = new Label("User Mobile:");
+        Label userMobile = new Label("User Mobile");
         grid.add(userMobile, 0, 4);
 
         TextField user_mob_tf = new TextField();
@@ -118,7 +120,7 @@ public class CustomerForm extends StackPane {
 
         /////////////////////////////////////////////////////////////////////////////
 
-        Label userPlan = new Label("Plan Type:");
+        Label userPlan = new Label("Plan Type");
         grid.add(userPlan, 0, 5);
 
         ToggleGroup plan_tg = new ToggleGroup();
@@ -138,7 +140,7 @@ public class CustomerForm extends StackPane {
 
         ////////////////////////////// Submission ////////////////////////////
 
-        Label st_lbl = new Label("Status:");
+        Label st_lbl = new Label("Status");
         Label status = new Label("Waiting Submission");
 
         grid.add(st_lbl, 0, 6);
@@ -153,23 +155,33 @@ public class CustomerForm extends StackPane {
 
                 if ( user_id_tf.getText().length() < 1){
                     status.setText("Enter a valid ID");
+                    status.getStyleClass().remove("success-label");
+                    status.getStyleClass().add("warning-label");
                     return;
                 }
                 if ( user_name_tf.getText().length() < 1){
                     status.setText("Enter a valid Name");
+                    status.getStyleClass().remove("success-label");
+                    status.getStyleClass().add("warning-label");
                     return;
                 }
                 if ( user_addr_tf.getText().length() < 1){
                     status.setText("Enter a valid Address");
+                    status.getStyleClass().remove("success-label");
+                    status.getStyleClass().add("warning-label");
                     return;
                 }
                 if ( user_mob_tf.getText().length() < 1){
                     status.setText("Enter a valid Mobile");
+                    status.getStyleClass().remove("success-label");
+                    status.getStyleClass().add("warning-label");
                     return;
                 }
                 Toggle selected = plan_tg.getSelectedToggle();
                 if(selected == null){
                     status.setText("Select a Plan");
+                    status.getStyleClass().remove("success-label");
+                    status.getStyleClass().add("warning-label");
                     return;
                 }
 
@@ -177,14 +189,20 @@ public class CustomerForm extends StackPane {
                 try {
                     Main.sys.addCustomer(user_id_tf.getText(), user_mob_tf.getText(),user_name_tf.getText(),user_addr_tf.getText(), plan);
                     status.setText("Added Successfully");
+                    status.getStyleClass().remove("warning-label");
+                    status.getStyleClass().add("success-label");
                 }catch (IllegalArgumentException e){
                     status.setText(e.getMessage());
+                    status.getStyleClass().remove("success-label");
+                    status.getStyleClass().add("warning-label");
                 }
 
             }else if(Operation.equals("Delete")){
 
                 if ( user_id_tf.getText().length() < 1){
                     status.setText("Enter a valid ID");
+                    status.getStyleClass().remove("success-label");
+                    status.getStyleClass().add("warning-label");
                     return;
                 }
 
@@ -192,6 +210,8 @@ public class CustomerForm extends StackPane {
 
                 if ( c == null ){
                     status.setText("Customer with this ID doesn't exist !");
+                    status.getStyleClass().remove("success-label");
+                    status.getStyleClass().add("warning-label");
                     return;
                 }
 
@@ -205,28 +225,40 @@ public class CustomerForm extends StackPane {
                 plan_tg.selectToggle(selected);
 
                 status.setText("Deleted Successfully");
+                status.getStyleClass().remove("warning-label");
+                status.getStyleClass().add("success-label");
 
             }else if(Operation.equals("Edit")){
 
                 if ( user_id_tf.getText().length() < 1){
                     status.setText("Enter a valid ID");
+                    status.getStyleClass().remove("success-label");
+                    status.getStyleClass().add("warning-label");
                     return;
                 }
                 if ( user_name_tf.getText().length() < 1){
                     status.setText("Enter a valid Name");
+                    status.getStyleClass().remove("success-label");
+                    status.getStyleClass().add("warning-label");
                     return;
                 }
                 if ( user_addr_tf.getText().length() < 1){
                     status.setText("Enter a valid Address");
+                    status.getStyleClass().remove("success-label");
+                    status.getStyleClass().add("warning-label");
                     return;
                 }
                 if ( user_mob_tf.getText().length() < 1){
                     status.setText("Enter a valid Mobile");
+                    status.getStyleClass().remove("success-label");
+                    status.getStyleClass().add("warning-label");
                     return;
                 }
 
                 if (Main.sys.searchCustomerByID(user_id_tf.getText()) == null){
                     status.setText("Customer with this ID doesn't exist !");
+                    status.getStyleClass().remove("success-label");
+                    status.getStyleClass().add("warning-label");
                     return;
                 }
 
@@ -236,15 +268,22 @@ public class CustomerForm extends StackPane {
 
                     Main.sys.editCustomer(user_id_tf.getText(), user_mob_tf.getText(),user_name_tf.getText(),user_addr_tf.getText(), plan);
                     status.setText("Edited Successfully");
+                    status.getStyleClass().remove("warning-label");
+                    status.getStyleClass().add("success-label");
 
                 }catch (IllegalArgumentException e){
                     status.setText(e.getMessage());
+                    status.getStyleClass().remove("success-label");
+                    status.getStyleClass().add("warning-label");
                 }
 
             }else{ // Search
 
                 if ( user_id_tf.getText().length() < 1){
                     status.setText("Enter a valid ID");
+                    status.getStyleClass().remove("success-label");
+                    status.getStyleClass().add("warning-label");
+
                     return;
                 }
 
@@ -252,6 +291,8 @@ public class CustomerForm extends StackPane {
 
                 if ( c == null ){
                     status.setText("Customer with this ID doesn't exist !");
+                    status.getStyleClass().remove("success-label");
+                    status.getStyleClass().add("warning-label");
                     return;
                 }
 
@@ -265,12 +306,25 @@ public class CustomerForm extends StackPane {
                 plan_tg.selectToggle(selected);
 
                 status.setText("Found !");
+                status.getStyleClass().remove("warning-label");
+                status.getStyleClass().add("success-label");
 
             }
 
         });
 
         grid.add(submit, 1, 7);
+
+        /////////////////////////////////////////////////////////////////////////////
+
+
+        if(Operation.equals("Delete") || Operation.equals("Search") ){
+            user_addr_tf.setDisable(true);
+            user_mob_tf.setDisable(true);
+            user_name_tf.setDisable(true);
+            limited_plan.setDisable(true);
+            unlimited_plan.setDisable(true);
+        }
 
 
 
