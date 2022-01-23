@@ -7,16 +7,19 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import unv.final_proj.models.Customer;
 import unv.final_proj.models.PlanType;
 
-public class CustomerForm extends StackPane {
+public class MediaForm extends StackPane {
 
-    public CustomerForm(String Operation) {
+    public MediaForm(String Operation) {
 
         this.getStylesheets().add(this.getClass().getResource("customer_form_styles.css").toExternalForm());
 
@@ -31,7 +34,7 @@ public class CustomerForm extends StackPane {
         main.setAlignment(Pos.CENTER);
         main.setSpacing(30);
 
-        Image illustration_svg = new Image(CustomerForm.class.getResourceAsStream("customers_illustration.png"));
+        Image illustration_svg = new Image(MediaForm.class.getResourceAsStream("media_illustration.png"));
         ImageView illustration = new ImageView(illustration_svg);
 
         illustration.setPreserveRatio(true);
@@ -44,13 +47,13 @@ public class CustomerForm extends StackPane {
         grid.setAlignment(Pos.CENTER);
         grid.getStyleClass().add("grid-pane");
 
-        Text form_title = new Text(Operation + " Customer Form");
+        Text form_title = new Text(Operation + " Media Form");
 
         form_title.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
 
         grid.add(form_title, 0, 0, 2, 1);
 
-        Label userID = new Label("User ID");
+        Label userID = new Label("Media Code");
         grid.add(userID, 0, 1);
 
         TextField user_id_tf = new TextField();
@@ -70,7 +73,7 @@ public class CustomerForm extends StackPane {
             public void changed(ObservableValue<? extends String> observable, String oldValue,
                                 String newValue) {
                 if (user_id_tf.getText().length() < 1) {
-                    user_name_tf.setText("Fill the ID Field !");
+                    user_name_tf.setText("Fill the Code Field !");
 
                 }
             }
@@ -154,7 +157,7 @@ public class CustomerForm extends StackPane {
             if(Operation.equals("Add")){
 
                 if ( user_id_tf.getText().length() < 1){
-                    status.setText("Enter a valid ID");
+                    status.setText("Enter a valid Code");
                     status.getStyleClass().remove("success-label");
                     status.getStyleClass().add("warning-label");
                     return;
@@ -187,7 +190,10 @@ public class CustomerForm extends StackPane {
 
                 String plan = (selected.equals(limited_plan)) ? "LIMITED" : "UNLIMITED" ;
                 try {
-                    Main.sys.addCustomer(user_id_tf.getText(), user_mob_tf.getText(),user_name_tf.getText(),user_addr_tf.getText(), plan);
+//                    Main.sys.addCustomer(user_id_tf.getText(), user_mob_tf.getText(),user_name_tf.getText(),user_addr_tf.getText(), plan);
+
+//                    Main.sys.addGame();
+
                     status.setText("Added Successfully");
                     status.getStyleClass().remove("warning-label");
                     status.getStyleClass().add("success-label");

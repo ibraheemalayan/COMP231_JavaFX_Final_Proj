@@ -82,7 +82,7 @@ public class HomeScreen extends StackPane {
         });
 
         media_btn.setOnAction((event) -> {    // lambda expression
-//            Main.stage.getScene().setRoot(Media);
+            Main.stage.getScene().setRoot(new MediaScreen());
         });
 
     }
