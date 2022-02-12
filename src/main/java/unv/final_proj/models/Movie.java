@@ -14,6 +14,10 @@ public class Movie extends Media{
         this.rating = rating;
     }
 
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+
     public String getRating() {
         return rating;
     }

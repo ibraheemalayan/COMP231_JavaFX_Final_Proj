@@ -7,15 +7,11 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import unv.final_proj.models.Customer;
-import unv.final_proj.models.PlanType;
+import unv.final_proj.models.*;
 
 public class MediaForm extends StackPane {
 
@@ -53,92 +49,99 @@ public class MediaForm extends StackPane {
 
         grid.add(form_title, 0, 0, 2, 1);
 
-        Label userID = new Label("Media Code");
-        grid.add(userID, 0, 1);
+        Label mediaCode = new Label("Media Code");
+        grid.add(mediaCode, 0, 1);
 
-        TextField user_id_tf = new TextField();
+        TextField media_code_tf = new TextField();
 
-        grid.add(user_id_tf, 1, 1);
+        grid.add(media_code_tf, 1, 1);
 
-/////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////
 
-        Label userName = new Label("User Name");
-        grid.add(userName, 0, 2);
+        Label mediaTitle = new Label("Media Title");
+        grid.add(mediaTitle, 0, 2);
 
-        TextField user_name_tf = new TextField();
+        TextField media_title_tf = new TextField();
 
 
-        user_name_tf.textProperty().addListener(new ChangeListener<String>() {
+        media_title_tf.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue,
                                 String newValue) {
-                if (user_id_tf.getText().length() < 1) {
-                    user_name_tf.setText("Fill the Code Field !");
+                if (media_code_tf.getText().length() < 1) {
+                    media_title_tf.setText("Fill the Code Field !");
 
                 }
             }
         });
 
-        grid.add(user_name_tf, 1, 2);
+        grid.add(media_title_tf, 1, 2);
 
         /////////////////////////////////////////////////////////////////////////////
 
-        Label userAddress = new Label("User Address");
-        grid.add(userAddress, 0, 3);
+        Label AvailableCopies = new Label("Available Copies");
+        grid.add(AvailableCopies, 0, 3);
 
-        TextField user_addr_tf = new TextField();
+        TextField copies_tf = new TextField();
 
 
-        user_addr_tf.textProperty().addListener(new ChangeListener<String>() {
+        copies_tf.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue,
                                 String newValue) {
-                if (user_name_tf.getText().length() < 1) {
-                    user_addr_tf.setText("Fill the Name Field !");
+                if (!newValue.matches("\\d*")) {
+                    copies_tf.setText(newValue.replaceAll("[^\\d]", ""));
                 }
             }
         });
 
-        grid.add(user_addr_tf, 1, 3);
+        grid.add(copies_tf, 1, 3);
 
         /////////////////////////////////////////////////////////////////////////////
 
-        Label userMobile = new Label("User Mobile");
-        grid.add(userMobile, 0, 4);
+        Label mediaType = new Label("Type");
+        grid.add(mediaType, 0, 4);
 
-        TextField user_mob_tf = new TextField();
+        ToggleGroup type_tg = new ToggleGroup();
 
+        RadioButton game_rb = new RadioButton("Game");
+        RadioButton album_rb = new RadioButton("Album");
+        RadioButton movie_rb = new RadioButton("Movie");
 
-        user_mob_tf.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue,
-                                String newValue) {
-                if (user_addr_tf.getText().length() < 1) {
-                    user_mob_tf.setText("Fill the Address Field !");
-                }
-            }
-        });
+        game_rb.setToggleGroup(type_tg);
+        album_rb.setToggleGroup(type_tg);
+        movie_rb.setToggleGroup(type_tg);
 
-        grid.add(user_mob_tf, 1, 4);
+        HBox types_hbox = new HBox();
+        types_hbox.getChildren().add(game_rb);
+        types_hbox.getChildren().add(album_rb);
+        types_hbox.getChildren().add(movie_rb);
+
+        grid.add(types_hbox, 1, 4);
 
         /////////////////////////////////////////////////////////////////////////////
 
-        Label userPlan = new Label("Plan Type");
-        grid.add(userPlan, 0, 5);
 
-        ToggleGroup plan_tg = new ToggleGroup();
+//        lidasa'gja'pdgfjs'pasdigj]padojsg]po'
+//
+//        Label userAddress = new Label("User Address");
+//        grid.add(userAddress, 0, 3);
+//
+//        TextField user_addr_tf = new TextField();
+//
+//
+//        user_addr_tf.textProperty().addListener(new ChangeListener<String>() {
+//            @Override
+//            public void changed(ObservableValue<? extends String> observable, String oldValue,
+//                                String newValue) {
+//                if (user_name_tf.getText().length() < 1) {
+//                    user_addr_tf.setText("Fill the Name Field !");
+//                }
+//            }
+//        });
+//
+//        grid.add(user_addr_tf, 1, 3);
 
-        RadioButton limited_plan = new RadioButton("Limited");
-        RadioButton unlimited_plan = new RadioButton("Unlimited");
-
-        limited_plan.setToggleGroup(plan_tg);
-        unlimited_plan.setToggleGroup(plan_tg);
-
-        HBox plan_hbox = new HBox();
-        plan_hbox.getChildren().add(limited_plan);
-        plan_hbox.getChildren().add(unlimited_plan);
-
-        grid.add(plan_hbox, 1, 5);
 
 
         ////////////////////////////// Submission ////////////////////////////
@@ -146,190 +149,373 @@ public class MediaForm extends StackPane {
         Label st_lbl = new Label("Status");
         Label status = new Label("Waiting Submission");
 
-        grid.add(st_lbl, 0, 6);
-        grid.add(status, 1, 6);
+        grid.add(st_lbl, 0, 7);
+        grid.add(status, 1, 7);
 
         Button submit = new Button(Operation);
         submit.getStyleClass().add("small_btn");
 
+        /////////////////////////////////////////////////////////////////////////////
+
+        Label gameWeight = new Label("Game Weight");
+        TextField game_weight_tf = new TextField();
+
+        Label albumArtisit = new Label("Album Artist");
+        TextField album_artist_tf = new TextField();
+        Label albumSongs = new Label("Album Songs");
+        TextField album_songs_tf = new TextField();
+
+        Label movieRating = new Label("Movie Rating");
+        TextField movie_rating_tf = new TextField();
+
+        Pane spring = new Pane();
+        spring.minHeightProperty().bind(copies_tf.heightProperty());
+        Pane spring2 = new Pane();
+        spring2.minHeightProperty().bind(copies_tf.heightProperty());
+
+        grid.add(spring2, 0, 5);
+        grid.add(spring, 0, 6);
+
+        type_tg.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
+            public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
+
+                grid.getChildren().remove(gameWeight);
+                grid.getChildren().remove(game_weight_tf);
+
+                grid.getChildren().remove(albumArtisit);
+                grid.getChildren().remove(album_artist_tf);
+                grid.getChildren().remove(albumSongs);
+                grid.getChildren().remove(album_songs_tf);
+
+                grid.getChildren().remove(movieRating);
+                grid.getChildren().remove(movie_rating_tf);
+
+                grid.getChildren().remove(spring);
+                grid.getChildren().remove(spring2);
+
+                if (type_tg.getSelectedToggle().equals(game_rb)) {
+
+
+                    grid.add(gameWeight, 0, 5);
+                    grid.add(game_weight_tf, 1, 5);
+
+                    grid.add(spring, 0, 6);
+
+
+                }else if (type_tg.getSelectedToggle().equals(album_rb)) {
+
+                    grid.add(albumArtisit, 0, 5);
+                    grid.add(album_artist_tf, 1, 5);
+                    grid.add(albumSongs, 0, 6);
+                    grid.add(album_songs_tf, 1, 6);
+
+                }else if (type_tg.getSelectedToggle().equals(movie_rb)) {
+
+                    grid.add(movieRating, 0, 5);
+                    grid.add(movie_rating_tf, 1, 5);
+
+                    grid.add(spring, 0, 6);
+                }
+            }
+        });
+
+        /////////////////////////////////////////////////////////////////////////////
+
         submit.setOnAction((event) -> {    // lambda expression
 
-            if(Operation.equals("Add")){
+            if(Operation.equals("Add")) {
 
-                if ( user_id_tf.getText().length() < 1){
+                if (media_code_tf.getText().length() < 1) {
                     status.setText("Enter a valid Code");
                     status.getStyleClass().remove("success-label");
                     status.getStyleClass().add("warning-label");
                     return;
                 }
-                if ( user_name_tf.getText().length() < 1){
-                    status.setText("Enter a valid Name");
+                if (media_title_tf.getText().length() < 1) {
+                    status.setText("Enter a valid Title");
                     status.getStyleClass().remove("success-label");
                     status.getStyleClass().add("warning-label");
                     return;
                 }
-                if ( user_addr_tf.getText().length() < 1){
-                    status.setText("Enter a valid Address");
-                    status.getStyleClass().remove("success-label");
-                    status.getStyleClass().add("warning-label");
-                    return;
-                }
-                if ( user_mob_tf.getText().length() < 1){
-                    status.setText("Enter a valid Mobile");
-                    status.getStyleClass().remove("success-label");
-                    status.getStyleClass().add("warning-label");
-                    return;
-                }
-                Toggle selected = plan_tg.getSelectedToggle();
-                if(selected == null){
-                    status.setText("Select a Plan");
+                if (copies_tf.getText().length() < 1) {
+                    status.setText("Enter a valid Number of Copies");
                     status.getStyleClass().remove("success-label");
                     status.getStyleClass().add("warning-label");
                     return;
                 }
 
-                String plan = (selected.equals(limited_plan)) ? "LIMITED" : "UNLIMITED" ;
-                try {
-//                    Main.sys.addCustomer(user_id_tf.getText(), user_mob_tf.getText(),user_name_tf.getText(),user_addr_tf.getText(), plan);
+                Toggle selected = type_tg.getSelectedToggle();
 
-//                    Main.sys.addGame();
-
-                    status.setText("Added Successfully");
-                    status.getStyleClass().remove("warning-label");
-                    status.getStyleClass().add("success-label");
-                }catch (IllegalArgumentException e){
-                    status.setText(e.getMessage());
+                if (selected == null) {
+                    status.setText("Select a Type");
                     status.getStyleClass().remove("success-label");
                     status.getStyleClass().add("warning-label");
+                    return;
                 }
 
+                if (selected.equals(game_rb)) {
+
+                    if (game_weight_tf.getText().length() < 1) {
+                        status.setText("Enter a valid Game Weight");
+                        status.getStyleClass().remove("success-label");
+                        status.getStyleClass().add("warning-label");
+                        return;
+                    }
+
+                    try {
+                        Main.sys.addGame(media_code_tf.getText(), media_title_tf.getText(), Integer.parseInt(copies_tf.getText()), Double.parseDouble(game_weight_tf.getText()));
+                        status.setText("Added Successfully");
+                        status.getStyleClass().remove("warning-label");
+                        status.getStyleClass().add("success-label");
+                    } catch (Exception e) {
+                        status.setText(e.getMessage());
+                        status.getStyleClass().remove("success-label");
+                        status.getStyleClass().add("warning-label");
+                    }
+
+
+                }else if (selected.equals(album_rb)) {
+
+                    if (album_songs_tf.getText().length() < 1) {
+                        status.setText("Enter album songs");
+                        status.getStyleClass().remove("success-label");
+                        status.getStyleClass().add("warning-label");
+                        return;
+                    }
+                    if (album_artist_tf.getText().length() < 1) {
+                        status.setText("Enter a valid Artist Name");
+                        status.getStyleClass().remove("success-label");
+                        status.getStyleClass().add("warning-label");
+                        return;
+                    }
+
+                    try {
+                        Main.sys.addAlbum(media_code_tf.getText(), media_title_tf.getText(), Integer.parseInt(copies_tf.getText()), album_artist_tf.getText(), album_songs_tf.getText());
+                        status.setText("Added Successfully");
+                        status.getStyleClass().remove("warning-label");
+                        status.getStyleClass().add("success-label");
+                    } catch (Exception e) {
+                        status.setText(e.getMessage());
+                        status.getStyleClass().remove("success-label");
+                        status.getStyleClass().add("warning-label");
+                    }
+
+                }else if (selected.equals(movie_rb)) {
+
+                    if (movie_rating_tf.getText().length() < 1) {
+                        status.setText("Enter a valid Movie Rating");
+                        status.getStyleClass().remove("success-label");
+                        status.getStyleClass().add("warning-label");
+                        return;
+                    }
+
+                    try {
+                        Main.sys.addMovie(media_code_tf.getText(), media_title_tf.getText(), Integer.parseInt(copies_tf.getText()), movie_rating_tf.getText());
+                        status.setText("Added Successfully");
+                        status.getStyleClass().remove("warning-label");
+                        status.getStyleClass().add("success-label");
+                    } catch (Exception e) {
+                        status.setText(e.getMessage());
+                        status.getStyleClass().remove("success-label");
+                        status.getStyleClass().add("warning-label");
+                    }
+
+                }
             }else if(Operation.equals("Delete")){
-
-                if ( user_id_tf.getText().length() < 1){
-                    status.setText("Enter a valid ID");
+                if (media_code_tf.getText().length() < 1) {
+                    status.setText("Enter a valid Code");
                     status.getStyleClass().remove("success-label");
                     status.getStyleClass().add("warning-label");
                     return;
                 }
 
-                Customer c = Main.sys.deleteCustomerByID(user_id_tf.getText());
+                Media m = Main.sys.deleteMediaByCode(media_code_tf.getText());
 
-                if ( c == null ){
-                    status.setText("Customer with this ID doesn't exist !");
+                if ( m == null ){
+                    status.setText("Media with this code doesn't exist !");
                     status.getStyleClass().remove("success-label");
                     status.getStyleClass().add("warning-label");
                     return;
                 }
 
-                user_addr_tf.setText(c.getAddress());
-                user_id_tf.setText(c.getId());
-                user_mob_tf.setText(c.getMobile());
-                user_name_tf.setText(c.getName());
+                media_code_tf.setText(m.getCode());
+                media_title_tf.setText(m.getTitle());
+                copies_tf.setText("" + m.getNum_of_available_copies());
 
-                Toggle selected = (c.getPlan().equals(PlanType.LIMITED)) ? limited_plan :unlimited_plan ;
+                if ( m instanceof Game){
+                    type_tg.selectToggle(game_rb);
+                    game_weight_tf.setText(((Game) m).getWeight()+"");
+                }else if ( m instanceof Movie){
+                    type_tg.selectToggle(movie_rb);
+                    movie_rating_tf.setText(((Movie) m).getRating() + "");
+                }else if ( m instanceof Album){
+                    type_tg.selectToggle(album_rb);
+                    album_songs_tf.setText(((Album) m).getSongs());
+                    album_artist_tf.setText(((Album) m).getArtist());
+                }
 
-                plan_tg.selectToggle(selected);
-
-                status.setText("Deleted Successfully");
+                status.setText("Removed form customers' carts, returned by renters, and deleted successfully");
                 status.getStyleClass().remove("warning-label");
                 status.getStyleClass().add("success-label");
 
             }else if(Operation.equals("Edit")){
 
-                if ( user_id_tf.getText().length() < 1){
-                    status.setText("Enter a valid ID");
+                if (media_code_tf.getText().length() < 1) {
+                    status.setText("Enter a valid Code");
                     status.getStyleClass().remove("success-label");
                     status.getStyleClass().add("warning-label");
                     return;
                 }
-                if ( user_name_tf.getText().length() < 1){
-                    status.setText("Enter a valid Name");
+                if (media_title_tf.getText().length() < 1) {
+                    status.setText("Enter a valid Title");
                     status.getStyleClass().remove("success-label");
                     status.getStyleClass().add("warning-label");
                     return;
                 }
-                if ( user_addr_tf.getText().length() < 1){
-                    status.setText("Enter a valid Address");
-                    status.getStyleClass().remove("success-label");
-                    status.getStyleClass().add("warning-label");
-                    return;
-                }
-                if ( user_mob_tf.getText().length() < 1){
-                    status.setText("Enter a valid Mobile");
+                if (copies_tf.getText().length() < 1) {
+                    status.setText("Enter a valid Number of Copies");
                     status.getStyleClass().remove("success-label");
                     status.getStyleClass().add("warning-label");
                     return;
                 }
 
-                if (Main.sys.searchCustomerByID(user_id_tf.getText()) == null){
-                    status.setText("Customer with this ID doesn't exist !");
+                Toggle selected = type_tg.getSelectedToggle();
+
+                if (selected == null) {
+                    status.setText("Select a Type");
                     status.getStyleClass().remove("success-label");
                     status.getStyleClass().add("warning-label");
                     return;
                 }
 
-                String plan_txt = "LIMITED";
-                PlanType plan = PlanType.valueOf(plan_txt.toUpperCase());
-                try {
+                if (selected.equals(game_rb)) {
 
-                    Main.sys.editCustomer(user_id_tf.getText(), user_mob_tf.getText(),user_name_tf.getText(),user_addr_tf.getText(), plan);
-                    status.setText("Edited Successfully");
-                    status.getStyleClass().remove("warning-label");
-                    status.getStyleClass().add("success-label");
+                    if (game_weight_tf.getText().length() < 1) {
+                        status.setText("Enter a valid Game Weight");
+                        status.getStyleClass().remove("success-label");
+                        status.getStyleClass().add("warning-label");
+                        return;
+                    }
 
-                }catch (IllegalArgumentException e){
-                    status.setText(e.getMessage());
-                    status.getStyleClass().remove("success-label");
-                    status.getStyleClass().add("warning-label");
+                    try {
+                        Main.sys.editGame(media_code_tf.getText(), media_title_tf.getText(), Integer.parseInt(copies_tf.getText()), Double.parseDouble(game_weight_tf.getText()));
+                        status.setText("Edited Game Successfully");
+                        status.getStyleClass().remove("warning-label");
+                        status.getStyleClass().add("success-label");
+                    } catch (Exception e) {
+                        status.setText(e.getMessage());
+                        status.getStyleClass().remove("success-label");
+                        status.getStyleClass().add("warning-label");
+                    }
+
+
+                }else if (selected.equals(album_rb)) {
+
+                    if (album_songs_tf.getText().length() < 1) {
+                        status.setText("Enter album songs");
+                        status.getStyleClass().remove("success-label");
+                        status.getStyleClass().add("warning-label");
+                        return;
+                    }
+                    if (album_artist_tf.getText().length() < 1) {
+                        status.setText("Enter a valid Artist Name");
+                        status.getStyleClass().remove("success-label");
+                        status.getStyleClass().add("warning-label");
+                        return;
+                    }
+
+                    try {
+                        Main.sys.editAlbum(media_code_tf.getText(), media_title_tf.getText(), Integer.parseInt(copies_tf.getText()), album_artist_tf.getText(), album_songs_tf.getText());
+                        status.setText("Edited Album Successfully");
+                        status.getStyleClass().remove("warning-label");
+                        status.getStyleClass().add("success-label");
+                    } catch (Exception e) {
+                        status.setText(e.getMessage());
+                        status.getStyleClass().remove("success-label");
+                        status.getStyleClass().add("warning-label");
+                    }
+
+                }else if (selected.equals(movie_rb)) {
+
+                    if (movie_rating_tf.getText().length() < 1) {
+                        status.setText("Enter a valid Movie Rating");
+                        status.getStyleClass().remove("success-label");
+                        status.getStyleClass().add("warning-label");
+                        return;
+                    }
+
+                    try {
+                        Main.sys.editMovie(media_code_tf.getText(), media_title_tf.getText(), Integer.parseInt(copies_tf.getText()), movie_rating_tf.getText());
+                        status.setText("Edited Movie Successfully");
+                        status.getStyleClass().remove("warning-label");
+                        status.getStyleClass().add("success-label");
+                    } catch (Exception e) {
+                        status.setText(e.getMessage());
+                        status.getStyleClass().remove("success-label");
+                        status.getStyleClass().add("warning-label");
+                    }
+
                 }
-
-            }else{ // Search
-
-                if ( user_id_tf.getText().length() < 1){
-                    status.setText("Enter a valid ID");
+            }else if(Operation.equals("Search")) {
+                if (media_code_tf.getText().length() < 1) {
+                    status.setText("Enter a valid Code");
                     status.getStyleClass().remove("success-label");
                     status.getStyleClass().add("warning-label");
-
                     return;
                 }
 
-                Customer c = Main.sys.searchCustomerByID(user_id_tf.getText());
+                Media m = Main.sys.searchMediaByCode(media_code_tf.getText());
 
-                if ( c == null ){
-                    status.setText("Customer with this ID doesn't exist !");
+                if (m == null) {
+                    status.setText("Media with this code doesn't exist !");
                     status.getStyleClass().remove("success-label");
                     status.getStyleClass().add("warning-label");
                     return;
                 }
 
-                user_addr_tf.setText(c.getAddress());
-                user_id_tf.setText(c.getId());
-                user_mob_tf.setText(c.getMobile());
-                user_name_tf.setText(c.getName());
+                media_code_tf.setText(m.getCode());
+                media_title_tf.setText(m.getTitle());
+                copies_tf.setText("" + m.getNum_of_available_copies());
 
-                Toggle selected = (c.getPlan().equals(PlanType.LIMITED)) ? limited_plan :unlimited_plan ;
+                if (m instanceof Game) {
+                    type_tg.selectToggle(game_rb);
+                    game_weight_tf.setText(((Game) m).getWeight() + "");
+                } else if (m instanceof Movie) {
+                    type_tg.selectToggle(movie_rb);
+                    movie_rating_tf.setText(((Movie) m).getRating() + "");
+                } else if (m instanceof Album) {
+                    type_tg.selectToggle(album_rb);
+                    album_songs_tf.setText(((Album) m).getSongs());
+                    album_artist_tf.setText(((Album) m).getArtist());
+                }
 
-                plan_tg.selectToggle(selected);
-
-                status.setText("Found !");
+                status.setText("Found Media");
                 status.getStyleClass().remove("warning-label");
                 status.getStyleClass().add("success-label");
-
             }
 
         });
 
-        grid.add(submit, 1, 7);
+        grid.add(submit, 1, 8);
+
 
         /////////////////////////////////////////////////////////////////////////////
 
 
         if(Operation.equals("Delete") || Operation.equals("Search") ){
-            user_addr_tf.setDisable(true);
-            user_mob_tf.setDisable(true);
-            user_name_tf.setDisable(true);
-            limited_plan.setDisable(true);
-            unlimited_plan.setDisable(true);
+            copies_tf.setDisable(true);
+            media_title_tf.setDisable(true);
+            album_rb.setDisable(true);
+            game_rb.setDisable(true);
+            movie_rb.setDisable(true);
+
+            album_artist_tf.setDisable(true);
+            album_songs_tf.setDisable(true);
+
+            game_weight_tf.setDisable(true);
+
+            movie_rating_tf.setDisable(true);
+
         }
 
 
@@ -349,7 +535,7 @@ public class MediaForm extends StackPane {
         all.getChildren().add(main);
 
         back_btn.setOnAction((event) -> {    // lambda expression
-            Main.stage.getScene().setRoot(new CustomersScreen());
+            Main.stage.getScene().setRoot(new MediaScreen());
         });
 
         this.getChildren().add(all);

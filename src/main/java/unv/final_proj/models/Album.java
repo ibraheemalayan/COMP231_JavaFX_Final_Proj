@@ -36,4 +36,11 @@ public class Album extends Media{
         return songs;
     }
 
+    public void setArtist(String artist) {
+        this.artist = artist;
+    }
+
+    public void setSongs(String songs) {
+        this.songs = songs;
+    }
 }

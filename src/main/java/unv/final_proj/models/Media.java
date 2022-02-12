@@ -1,8 +1,12 @@
 package unv.final_proj.models;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 public class Media implements Comparable<Media>, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 98564850567239840L;
 
     protected String title, Code;
     protected int num_of_available_copies;
@@ -56,4 +60,11 @@ public class Media implements Comparable<Media>, Serializable {
         return this.compareTo( (Media) o ) == 0;
     }
 
+    public int getNum_of_available_copies() {
+        return num_of_available_copies;
+    }
+
+    public void setNum_of_available_copies(int num_of_available_copies) {
+        this.num_of_available_copies = num_of_available_copies;
+    }
 }

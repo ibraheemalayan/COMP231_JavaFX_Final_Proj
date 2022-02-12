@@ -18,6 +18,10 @@ public class Game extends Media{
         return weight;
     }
 
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
     @Override
     public String
     toString() {

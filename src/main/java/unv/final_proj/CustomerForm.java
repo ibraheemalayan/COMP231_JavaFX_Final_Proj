@@ -296,10 +296,11 @@ public class CustomerForm extends StackPane {
                     return;
                 }
 
+                user_name_tf.setText(c.getName());
                 user_addr_tf.setText(c.getAddress());
                 user_id_tf.setText(c.getId());
                 user_mob_tf.setText(c.getMobile());
-                user_name_tf.setText(c.getName());
+
 
                 Toggle selected = (c.getPlan().equals(PlanType.LIMITED)) ? limited_plan :unlimited_plan ;
 

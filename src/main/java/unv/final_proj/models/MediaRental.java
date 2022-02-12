@@ -91,13 +91,42 @@ public class MediaRental implements MediaRentalInt, Serializable {
             customers.get(index).setPlan(plan);
 
         }else{
-            // Customer Already Exist
-            throw new IllegalArgumentException("Customer with this id doesn't");
+            throw new IllegalArgumentException("Customer with this id doesn't exist");
         }
 
         update_file();
 
     }
+    public void editMedia(Media m) throws IllegalArgumentException {
+
+        int index = Collections.binarySearch(media, m, Comparator.comparing(Media::getCode));
+        if (index >= 0) {
+
+            media.get(index).setTitle(m.getTitle());
+            media.get(index).setNum_of_available_copies(m.getNum_of_available_copies());
+
+            if ( m instanceof Game && media.get(index) instanceof Game ){
+                ((Game)(media.get(index))).setWeight(((Game) m).getWeight());
+            }else if ( m instanceof Movie && media.get(index) instanceof Movie ){
+                ((Movie)(media.get(index))).setRating(((Movie) m).getRating());
+            }else if ( m instanceof Album && media.get(index) instanceof Album ){
+                ((Album)(media.get(index))).setArtist(((Album) m).getArtist());
+                ((Album)(media.get(index))).setSongs(((Album) m).getSongs());
+            }else{
+                throw new IllegalArgumentException("The type of the media with this code doesn't match selected type");
+            }
+
+
+        }else{
+            // Media Not Found
+            throw new IllegalArgumentException("Media with this code doesn't exist");
+        }
+
+
+        update_file();
+
+    }
+
 
     public Customer searchCustomerByID(String ID){
 
@@ -135,12 +164,12 @@ public class MediaRental implements MediaRentalInt, Serializable {
         return c;
     }
 
-    public void deleteMediaByCode(String Code){
+    public Media deleteMediaByCode(String Code){
 
         int index = Collections.binarySearch(media, new Media(Code, "", 0), Comparator.comparing(Media::getCode));
 
         if ( index < 0 ){
-            return; // not found
+            return null; // not found
         }
 
         Media m = media.remove(index);
@@ -153,8 +182,9 @@ public class MediaRental implements MediaRentalInt, Serializable {
 
         }
 
-        media.remove(index);
         update_file();
+
+        return m;
     }
 
 
@@ -164,6 +194,9 @@ public class MediaRental implements MediaRentalInt, Serializable {
         int index = Collections.binarySearch(media, m, Comparator.comparing(Media::getCode));
         if (index < 0) {
             index = -index - 1;
+        }else{
+            // Media Already Exist
+            throw new IllegalArgumentException("Media with this code already exists");
         }
 
         media.add(index, m);
@@ -188,6 +221,14 @@ public class MediaRental implements MediaRentalInt, Serializable {
 
     }
 
+    public void editMovie(String code, String title, int copiesAvailable, String rating) {
+
+        Movie new_m = new Movie(code, title, copiesAvailable, rating);
+
+        editMedia(new_m);
+
+    }
+
     /**
      * Adds the specified game to the database.
      *
@@ -201,6 +242,14 @@ public class MediaRental implements MediaRentalInt, Serializable {
         Game new_g = new Game(code, title, copiesAvailable, weight);
 
         addMedia(new_g);
+
+    }
+
+    public void editGame(String code, String title, int copiesAvailable, double weight) {
+
+        Game new_g = new Game(code, title, copiesAvailable, weight);
+
+        editMedia(new_g);
 
     }
 
@@ -220,6 +269,14 @@ public class MediaRental implements MediaRentalInt, Serializable {
         Album new_a = new Album(code, title, copiesAvailable, artist, songs);
 
         addMedia(new_a);
+
+    }
+
+    public void editAlbum(String code, String title, int copiesAvailable, String artist, String songs) {
+
+        Album new_a = new Album(code, title, copiesAvailable, artist, songs);
+
+        editMedia(new_a);
 
     }
 
