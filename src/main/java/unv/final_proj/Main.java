@@ -20,15 +20,15 @@ public class Main extends Application {
 //        TODO use BorderPane
         BorderPane bp = new BorderPane();
 
-        this.stage = stage;
+        Main.stage = stage;
 
-        this.sys = Driver.loadFile();
+        Main.sys = Driver.loadFile();
 
         HomeScreen main = new HomeScreen();
 
         Scene root_scene = new Scene(main);
 
-        stage.setTitle("Media Rental");
+        stage.setTitle("Media Rental - Ibraheem Alyan - 1201180");
         stage.setScene(root_scene);
         stage.setMaximized(true);
         stage.setMinHeight(1000);

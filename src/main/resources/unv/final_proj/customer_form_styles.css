@@ -9,9 +9,25 @@
     -fx-font-size: 24px;
 }
 
+.has-top-border{
+    -fx-border-width : 2 0 0 0;
+
+    -fx-border-color : #AAAAAA;
+}
+
 .label{
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 10px;
+    -fx-padding: 10px;
+    -fx-font-size: 24px;
+}
+
+.text {
+    -fx-padding: 10px;
+    -fx-font-size: 22px;
+}
+
+.label-text {
     -fx-padding: 10px;
     -fx-font-size: 24px;
 }

@@ -14,11 +14,13 @@ import javafx.scene.text.Text;
 import unv.final_proj.models.Customer;
 import unv.final_proj.models.PlanType;
 
+import java.util.Objects;
+
 public class CustomerForm extends StackPane {
 
     public CustomerForm(String Operation) {
 
-        this.getStylesheets().add(this.getClass().getResource("customer_form_styles.css").toExternalForm());
+        this.getStylesheets().add(Objects.requireNonNull(this.getClass().getResource("customer_form_styles.css")).toExternalForm());
 
         this.setPadding(new Insets(40, 40, 40, 40));
 
@@ -31,7 +33,7 @@ public class CustomerForm extends StackPane {
         main.setAlignment(Pos.CENTER);
         main.setSpacing(30);
 
-        Image illustration_svg = new Image(CustomerForm.class.getResourceAsStream("customers_illustration.png"));
+        Image illustration_svg = new Image(Objects.requireNonNull(CustomerForm.class.getResourceAsStream("customers_illustration.png")));
         ImageView illustration = new ImageView(illustration_svg);
 
         illustration.setPreserveRatio(true);
@@ -151,165 +153,170 @@ public class CustomerForm extends StackPane {
 
         submit.setOnAction((event) -> {    // lambda expression
 
-            if(Operation.equals("Add")){
+            switch (Operation) {
+                case "Add" -> {
 
-                if ( user_id_tf.getText().length() < 1){
-                    status.setText("Enter a valid ID");
-                    status.getStyleClass().remove("success-label");
-                    status.getStyleClass().add("warning-label");
-                    return;
+                    if (user_id_tf.getText().length() < 1) {
+                        status.setText("Enter a valid ID");
+                        status.getStyleClass().remove("success-label");
+                        status.getStyleClass().add("warning-label");
+                        return;
+                    }
+                    if (user_name_tf.getText().length() < 1) {
+                        status.setText("Enter a valid Name");
+                        status.getStyleClass().remove("success-label");
+                        status.getStyleClass().add("warning-label");
+                        return;
+                    }
+                    if (user_addr_tf.getText().length() < 1) {
+                        status.setText("Enter a valid Address");
+                        status.getStyleClass().remove("success-label");
+                        status.getStyleClass().add("warning-label");
+                        return;
+                    }
+                    if (user_mob_tf.getText().length() < 1) {
+                        status.setText("Enter a valid Mobile");
+                        status.getStyleClass().remove("success-label");
+                        status.getStyleClass().add("warning-label");
+                        return;
+                    }
+                    Toggle selected = plan_tg.getSelectedToggle();
+                    if (selected == null) {
+                        status.setText("Select a Plan");
+                        status.getStyleClass().remove("success-label");
+                        status.getStyleClass().add("warning-label");
+                        return;
+                    }
+
+                    String plan = (selected.equals(limited_plan)) ? "LIMITED" : "UNLIMITED";
+                    try {
+                        Main.sys.addCustomer(user_id_tf.getText(), user_mob_tf.getText(), user_name_tf.getText(), user_addr_tf.getText(), plan);
+                        status.setText("Added Successfully");
+                        status.getStyleClass().remove("warning-label");
+                        status.getStyleClass().add("success-label");
+                    } catch (IllegalArgumentException e) {
+                        status.setText(e.getMessage());
+                        status.getStyleClass().remove("success-label");
+                        status.getStyleClass().add("warning-label");
+                    }
+
                 }
-                if ( user_name_tf.getText().length() < 1){
-                    status.setText("Enter a valid Name");
-                    status.getStyleClass().remove("success-label");
-                    status.getStyleClass().add("warning-label");
-                    return;
-                }
-                if ( user_addr_tf.getText().length() < 1){
-                    status.setText("Enter a valid Address");
-                    status.getStyleClass().remove("success-label");
-                    status.getStyleClass().add("warning-label");
-                    return;
-                }
-                if ( user_mob_tf.getText().length() < 1){
-                    status.setText("Enter a valid Mobile");
-                    status.getStyleClass().remove("success-label");
-                    status.getStyleClass().add("warning-label");
-                    return;
-                }
-                Toggle selected = plan_tg.getSelectedToggle();
-                if(selected == null){
-                    status.setText("Select a Plan");
-                    status.getStyleClass().remove("success-label");
-                    status.getStyleClass().add("warning-label");
-                    return;
-                }
+                case "Delete" -> {
 
-                String plan = (selected.equals(limited_plan)) ? "LIMITED" : "UNLIMITED" ;
-                try {
-                    Main.sys.addCustomer(user_id_tf.getText(), user_mob_tf.getText(),user_name_tf.getText(),user_addr_tf.getText(), plan);
-                    status.setText("Added Successfully");
-                    status.getStyleClass().remove("warning-label");
-                    status.getStyleClass().add("success-label");
-                }catch (IllegalArgumentException e){
-                    status.setText(e.getMessage());
-                    status.getStyleClass().remove("success-label");
-                    status.getStyleClass().add("warning-label");
-                }
+                    if (user_id_tf.getText().length() < 1) {
+                        status.setText("Enter a valid ID");
+                        status.getStyleClass().remove("success-label");
+                        status.getStyleClass().add("warning-label");
+                        return;
+                    }
 
-            }else if(Operation.equals("Delete")){
+                    Customer c = Main.sys.deleteCustomerByID(user_id_tf.getText());
 
-                if ( user_id_tf.getText().length() < 1){
-                    status.setText("Enter a valid ID");
-                    status.getStyleClass().remove("success-label");
-                    status.getStyleClass().add("warning-label");
-                    return;
-                }
+                    if (c == null) {
+                        status.setText("Customer with this ID doesn't exist !");
+                        status.getStyleClass().remove("success-label");
+                        status.getStyleClass().add("warning-label");
+                        return;
+                    }
 
-                Customer c = Main.sys.deleteCustomerByID(user_id_tf.getText());
+                    user_addr_tf.setText(c.getAddress());
+                    user_id_tf.setText(c.getId());
+                    user_mob_tf.setText(c.getMobile());
+                    user_name_tf.setText(c.getName());
 
-                if ( c == null ){
-                    status.setText("Customer with this ID doesn't exist !");
-                    status.getStyleClass().remove("success-label");
-                    status.getStyleClass().add("warning-label");
-                    return;
-                }
+                    Toggle selected = (c.getPlan().equals(PlanType.LIMITED)) ? limited_plan : unlimited_plan;
 
-                user_addr_tf.setText(c.getAddress());
-                user_id_tf.setText(c.getId());
-                user_mob_tf.setText(c.getMobile());
-                user_name_tf.setText(c.getName());
+                    plan_tg.selectToggle(selected);
 
-                Toggle selected = (c.getPlan().equals(PlanType.LIMITED)) ? limited_plan :unlimited_plan ;
-
-                plan_tg.selectToggle(selected);
-
-                status.setText("Deleted Successfully");
-                status.getStyleClass().remove("warning-label");
-                status.getStyleClass().add("success-label");
-
-            }else if(Operation.equals("Edit")){
-
-                if ( user_id_tf.getText().length() < 1){
-                    status.setText("Enter a valid ID");
-                    status.getStyleClass().remove("success-label");
-                    status.getStyleClass().add("warning-label");
-                    return;
-                }
-                if ( user_name_tf.getText().length() < 1){
-                    status.setText("Enter a valid Name");
-                    status.getStyleClass().remove("success-label");
-                    status.getStyleClass().add("warning-label");
-                    return;
-                }
-                if ( user_addr_tf.getText().length() < 1){
-                    status.setText("Enter a valid Address");
-                    status.getStyleClass().remove("success-label");
-                    status.getStyleClass().add("warning-label");
-                    return;
-                }
-                if ( user_mob_tf.getText().length() < 1){
-                    status.setText("Enter a valid Mobile");
-                    status.getStyleClass().remove("success-label");
-                    status.getStyleClass().add("warning-label");
-                    return;
-                }
-
-                if (Main.sys.searchCustomerByID(user_id_tf.getText()) == null){
-                    status.setText("Customer with this ID doesn't exist !");
-                    status.getStyleClass().remove("success-label");
-                    status.getStyleClass().add("warning-label");
-                    return;
-                }
-
-                String plan_txt = "LIMITED";
-                PlanType plan = PlanType.valueOf(plan_txt.toUpperCase());
-                try {
-
-                    Main.sys.editCustomer(user_id_tf.getText(), user_mob_tf.getText(),user_name_tf.getText(),user_addr_tf.getText(), plan);
-                    status.setText("Edited Successfully");
+                    status.setText("Deleted Successfully");
                     status.getStyleClass().remove("warning-label");
                     status.getStyleClass().add("success-label");
 
-                }catch (IllegalArgumentException e){
-                    status.setText(e.getMessage());
-                    status.getStyleClass().remove("success-label");
-                    status.getStyleClass().add("warning-label");
                 }
+                case "Edit" -> {
 
-            }else{ // Search
+                    if (user_id_tf.getText().length() < 1) {
+                        status.setText("Enter a valid ID");
+                        status.getStyleClass().remove("success-label");
+                        status.getStyleClass().add("warning-label");
+                        return;
+                    }
+                    if (user_name_tf.getText().length() < 1) {
+                        status.setText("Enter a valid Name");
+                        status.getStyleClass().remove("success-label");
+                        status.getStyleClass().add("warning-label");
+                        return;
+                    }
+                    if (user_addr_tf.getText().length() < 1) {
+                        status.setText("Enter a valid Address");
+                        status.getStyleClass().remove("success-label");
+                        status.getStyleClass().add("warning-label");
+                        return;
+                    }
+                    if (user_mob_tf.getText().length() < 1) {
+                        status.setText("Enter a valid Mobile");
+                        status.getStyleClass().remove("success-label");
+                        status.getStyleClass().add("warning-label");
+                        return;
+                    }
 
-                if ( user_id_tf.getText().length() < 1){
-                    status.setText("Enter a valid ID");
-                    status.getStyleClass().remove("success-label");
-                    status.getStyleClass().add("warning-label");
+                    if (Main.sys.searchCustomerByID(user_id_tf.getText()) == null) {
+                        status.setText("Customer with this ID doesn't exist !");
+                        status.getStyleClass().remove("success-label");
+                        status.getStyleClass().add("warning-label");
+                        return;
+                    }
 
-                    return;
+                    String plan_txt = "LIMITED";
+                    PlanType plan = PlanType.valueOf(plan_txt.toUpperCase());
+                    try {
+
+                        Main.sys.editCustomer(user_id_tf.getText(), user_mob_tf.getText(), user_name_tf.getText(), user_addr_tf.getText(), plan);
+                        status.setText("Edited Successfully");
+                        status.getStyleClass().remove("warning-label");
+                        status.getStyleClass().add("success-label");
+
+                    } catch (IllegalArgumentException e) {
+                        status.setText(e.getMessage());
+                        status.getStyleClass().remove("success-label");
+                        status.getStyleClass().add("warning-label");
+                    }
+
                 }
+                case "Search" -> {
 
-                Customer c = Main.sys.searchCustomerByID(user_id_tf.getText());
+                    if (user_id_tf.getText().length() < 1) {
+                        status.setText("Enter a valid ID");
+                        status.getStyleClass().remove("success-label");
+                        status.getStyleClass().add("warning-label");
 
-                if ( c == null ){
-                    status.setText("Customer with this ID doesn't exist !");
-                    status.getStyleClass().remove("success-label");
-                    status.getStyleClass().add("warning-label");
-                    return;
+                        return;
+                    }
+
+                    Customer c = Main.sys.searchCustomerByID(user_id_tf.getText());
+
+                    if (c == null) {
+                        status.setText("Customer with this ID doesn't exist !");
+                        status.getStyleClass().remove("success-label");
+                        status.getStyleClass().add("warning-label");
+                        return;
+                    }
+
+                    user_name_tf.setText(c.getName());
+                    user_addr_tf.setText(c.getAddress());
+                    user_id_tf.setText(c.getId());
+                    user_mob_tf.setText(c.getMobile());
+
+
+                    Toggle selected = (c.getPlan().equals(PlanType.LIMITED)) ? limited_plan : unlimited_plan;
+
+                    plan_tg.selectToggle(selected);
+
+                    status.setText("Found !");
+                    status.getStyleClass().remove("warning-label");
+                    status.getStyleClass().add("success-label");
+
                 }
-
-                user_name_tf.setText(c.getName());
-                user_addr_tf.setText(c.getAddress());
-                user_id_tf.setText(c.getId());
-                user_mob_tf.setText(c.getMobile());
-
-
-                Toggle selected = (c.getPlan().equals(PlanType.LIMITED)) ? limited_plan :unlimited_plan ;
-
-                plan_tg.selectToggle(selected);
-
-                status.setText("Found !");
-                status.getStyleClass().remove("warning-label");
-                status.getStyleClass().add("success-label");
-
             }
 
         });

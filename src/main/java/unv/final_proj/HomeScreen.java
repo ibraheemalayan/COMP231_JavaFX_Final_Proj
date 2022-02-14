@@ -2,17 +2,18 @@ package unv.final_proj;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
+import java.util.Objects;
+
 public class HomeScreen extends StackPane {
 
     public HomeScreen() {
 
-        this.getStylesheets().add(Main.class.getResource("home_styles.css").toExternalForm());
+        this.getStylesheets().add(Objects.requireNonNull(Main.class.getResource("home_styles.css")).toExternalForm());
 
         this.setPadding(new Insets(80, 80, 80, 80));
 
@@ -22,7 +23,7 @@ public class HomeScreen extends StackPane {
         main.setAlignment(Pos.CENTER);
         main.setSpacing(30);
 
-        Image illustration_svg = new Image(HomeScreen.class.getResourceAsStream("illustration.png"));
+        Image illustration_svg = new Image(Objects.requireNonNull(HomeScreen.class.getResourceAsStream("illustration.png")));
         ImageView illustration = new ImageView(illustration_svg);
 
         illustration.setPreserveRatio(true);
@@ -38,12 +39,12 @@ public class HomeScreen extends StackPane {
         btns_pane.maxWidthProperty().bind(main.widthProperty());
 
 
-        Image img_1 = new Image(HomeScreen.class.getResourceAsStream("customers.png"));
+        Image img_1 = new Image(Objects.requireNonNull(HomeScreen.class.getResourceAsStream("customers.png")));
         ImageView img = new ImageView(img_1);
         img.setFitHeight(40);
         img.setPreserveRatio(true);
 
-        Image img_2 = new Image(HomeScreen.class.getResourceAsStream("media.png"));
+        Image img_2 = new Image(Objects.requireNonNull(HomeScreen.class.getResourceAsStream("media.png")));
         ImageView img2 = new ImageView(img_2);
         img2.setFitHeight(40);
         img2.setPreserveRatio(true);
@@ -66,9 +67,9 @@ public class HomeScreen extends StackPane {
         btns_pane.getChildren().add(transparent_pane);
         btns_pane.getChildren().add(rent_btn);
 
-        btns_pane.setHgrow(customers_btn, Priority.ALWAYS);
-        btns_pane.setHgrow(media_btn, Priority.ALWAYS);
-        btns_pane.setHgrow(rent_btn, Priority.ALWAYS);
+        HBox.setHgrow(customers_btn, Priority.ALWAYS);
+        HBox.setHgrow(media_btn, Priority.ALWAYS);
+        HBox.setHgrow(rent_btn, Priority.ALWAYS);
 
         main.getChildren().add(illustration);
         main.getChildren().add(btns_pane);
@@ -83,6 +84,10 @@ public class HomeScreen extends StackPane {
 
         media_btn.setOnAction((event) -> {    // lambda expression
             Main.stage.getScene().setRoot(new MediaScreen());
+        });
+
+        rent_btn.setOnAction((event) -> {    // lambda expression
+            Main.stage.getScene().setRoot(new RentScreen());
         });
 
     }

@@ -113,6 +113,11 @@ public class Customer implements Serializable {
     }
 
     public void AddToCart(Media m){
+
+        if( cart.contains(m) ){
+            return;
+        }
+
         cart.add(m);
     }
     public boolean RemoveFromCart(String media_code){
@@ -128,18 +133,26 @@ public class Customer implements Serializable {
 
     public String proccess_requests(){
 
-        String res = "";
+        StringBuilder res = new StringBuilder();
         for (int i = 0; i < cart.size(); i++) {
+
             Media m = cart.get(i);
-            if ( m.available() && this.canRent() ){
+
+            if ( ! m.available() ){
+                res.append("Media ").append(m.getTitle()).append(" was not sent to ").append(this.getName()).append(" due to unavailability\n");
+            }
+            else if ( ! this.canRent() ){
+                res.append("Customer ").append(this.getName()).append(" cannot rent ").append(m.getTitle()).append(" due to Plan limits\n");
+            }
+            else{
                 m.rent_media();
                 this.rented.add(m);
-                res += "Sending " + m.getTitle() + " to " + this.getName() + "\n";
+                res.append("Sending ").append(m.getTitle()).append(" to ").append(this.getName()).append("\n");
                 this.cart.remove(m);
             }
 
         }
-        return res;
+        return res.toString();
     }
 
     public boolean ReturnMedia(String media_code){

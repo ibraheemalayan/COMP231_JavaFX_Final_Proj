@@ -24,7 +24,7 @@ public class MediaRental implements MediaRentalInt, Serializable {
         media = new ArrayList<Media>();
     }
 
-    private void update_file(){
+    public void update_file(){
         ObjectOutputStream oos = null;
         FileOutputStream fout = null;
         try{
@@ -297,14 +297,14 @@ public class MediaRental implements MediaRentalInt, Serializable {
     @Override
     public String getAllCustomersInfo() {
 
-        String res = "";
+        StringBuilder res = new StringBuilder();
 
         for ( Customer c : customers ) {
-            res += "\n" + c ;
+            res.append("\n").append(c);
 
         }
 
-        return res;
+        return res.toString();
     }
 
     /**
@@ -314,14 +314,14 @@ public class MediaRental implements MediaRentalInt, Serializable {
     @Override
     public String getAllMediaInfo() {
 
-        String res = "";
+        StringBuilder res = new StringBuilder();
 
         for ( Media m : media ) {
-            res += "\n" + m ;
+            res.append("\n").append(m);
 
         }
 
-        return res;
+        return res.toString();
 
     }
 
@@ -372,6 +372,8 @@ public class MediaRental implements MediaRentalInt, Serializable {
             update_file();
             return true;
         }
+
+        update_file();
 
         return false;
     }
@@ -428,6 +430,8 @@ public class MediaRental implements MediaRentalInt, Serializable {
             update_file();
             return true;
         }
+
+        update_file();
 
         return false;
     }
