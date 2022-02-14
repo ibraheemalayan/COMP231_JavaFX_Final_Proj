@@ -13,13 +13,12 @@ public class Album extends Media{
 
     @Override
     public String toString() {
-        return "Album{" +
-                "artist='" + artist + '\'' +
-                ", songs='" + songs + '\'' +
-                ", title='" + title + '\'' +
-                ", Code='" + Code + '\'' +
-                ", num_of_available_copies=" + num_of_available_copies +
-                '}';
+
+        return "Album:\n\tcode: " + Code +
+                "\n\ttitle: " + title +
+                "\n\tcopies: " + num_of_available_copies +
+                "\n\tartist: " + artist +
+                "\n\tsongs: " + songs + "\n";
     }
 
     public Album(String Code, String title, int num_of_available_copies, String artist, String songs) {

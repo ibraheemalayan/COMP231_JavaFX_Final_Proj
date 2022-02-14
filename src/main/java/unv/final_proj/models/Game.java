@@ -25,11 +25,11 @@ public class Game extends Media{
     @Override
     public String
     toString() {
-        return "Game{" +
-                "weight=" + weight +
-                ", title='" + title + '\'' +
-                ", Code='" + Code + '\'' +
-                ", num_of_available_copies=" + num_of_available_copies +
-                '}';
+
+        return "Game:\n\tcode: " + this.Code +
+                "\n\ttitle: " + title +
+                "\n\tcopies: " + num_of_available_copies +
+                "\n\tweight: " + weight + "\n";
+
     }
 }

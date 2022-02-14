@@ -14,6 +14,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import unv.final_proj.models.*;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class RentScreen extends StackPane {
@@ -46,14 +47,22 @@ public class RentScreen extends StackPane {
 
         back_btn_cont.setLeft(back_btn);
 
+        LocalDate now = LocalDate.now();
+
+        Text rent_date = new Text("Rent Date: " + now.toString());
+        back_btn_cont.setRight(rent_date);
+
+        rent_date.getStyleClass().add("small-text");
+
         back_btn_cont.setPadding(new Insets(30));
 
         all.getChildren().add(back_btn_cont);
 
         /////////////////////////////////////////////////////////////////////////////
 
-        Label form_title = new Label("Rent Media Form");
+        Text form_title = new Text("Rent Media Form");
         form_title.setFont(Font.font("Tahoma", FontWeight.EXTRA_BOLD, 30));
+        form_title.getStyleClass().add("text");
 
         all.getChildren().add(form_title);
 

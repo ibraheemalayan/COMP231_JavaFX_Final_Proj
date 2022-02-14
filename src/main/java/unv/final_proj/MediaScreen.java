@@ -2,11 +2,15 @@ package unv.final_proj;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.stage.Stage;
+import unv.final_proj.models.Media;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class MediaScreen extends StackPane {
@@ -60,6 +64,11 @@ public class MediaScreen extends StackPane {
         search_img.setFitHeight(40);
         search_img.setPreserveRatio(true);
 
+        Image list_img_png = new Image(Objects.requireNonNull(HomeScreen.class.getResourceAsStream("list.png")));
+        ImageView list_img = new ImageView(list_img_png);
+        list_img.setFitHeight(40);
+        list_img.setPreserveRatio(true);
+
 
         Pane transparent_pane = new Pane();
         transparent_pane.getStyleClass().add("transparent_pane");
@@ -68,11 +77,13 @@ public class MediaScreen extends StackPane {
         Button add_btn =    new Button("  Add   ", add_img);
         Button edit_btn =   new Button("  Edit  ", edit_img);
         Button del_btn =    new Button("  Delete", del_img);
+        Button list_btn =    new Button("  List  ", list_img);
         Button search_btn = new Button("  Search", search_img);
 
         add_btn.getStyleClass().add("btn");
         edit_btn.getStyleClass().add("btn");
         del_btn.getStyleClass().add("btn");
+        list_btn.getStyleClass().add("btn");
         search_btn.getStyleClass().add("btn");
 
         search_btn.getStyleClass().add("dark-bg");
@@ -82,11 +93,13 @@ public class MediaScreen extends StackPane {
         btns_pane.getChildren().add(edit_btn);
         btns_pane.getChildren().add(del_btn);
         btns_pane.getChildren().add(transparent_pane);
+        btns_pane.getChildren().add(list_btn);
         btns_pane.getChildren().add(search_btn);
 
         VBox.setVgrow(add_btn, Priority.ALWAYS);
         VBox.setVgrow(edit_btn, Priority.ALWAYS);
         VBox.setVgrow(del_btn, Priority.ALWAYS);
+        VBox.setVgrow(list_btn, Priority.ALWAYS);
         VBox.setVgrow(search_btn, Priority.ALWAYS);
 
         Button back_btn = new Button("Back");
@@ -115,6 +128,30 @@ public class MediaScreen extends StackPane {
         });
         del_btn.setOnAction((event) -> {    // lambda expression
             Main.stage.getScene().setRoot(new MediaForm("Delete"));
+        });
+        list_btn.setOnAction((event) -> {    // lambda expression
+
+            Stage st = new Stage();
+
+            ArrayList<Media> media = Main.sys.getAllMedia();
+
+            Scene root_scene = null;
+
+            if ( media.size() == 0 ){
+                ProcessResultsScreen pr = new ProcessResultsScreen("Nothing To Show");
+                root_scene = new Scene(pr);
+            }else{
+                ListScreen ls = new ListScreen(media);
+                root_scene = new Scene(ls);
+            }
+
+
+            st.setTitle("All Media Info");
+            st.setScene(root_scene);
+            st.setMinHeight(100);
+            st.setMinWidth(300);
+            st.show();
+
         });
         search_btn.setOnAction((event) -> {    // lambda expression
             Main.stage.getScene().setRoot(new MediaForm("Search"));

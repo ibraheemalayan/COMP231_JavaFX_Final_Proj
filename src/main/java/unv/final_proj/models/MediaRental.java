@@ -325,6 +325,12 @@ public class MediaRental implements MediaRentalInt, Serializable {
 
     }
 
+    public ArrayList<Media> getAllMedia() {
+
+        return media;
+
+    }
+
     /**
      * Adds the specified media title to the cart associated with a customer.
      *

@@ -24,10 +24,9 @@ public class Movie extends Media{
 
     @Override
     public String toString() {
-        return "Movie{" +
-                "title='" + title + '\'' +
-                ", num_of_available_copies=" + num_of_available_copies +
-                ", rating='" + rating + '\'' +
-                '}';
+        return "Movie:\n\tcode: " + Code +
+                "\n\ttitle: " + title +
+                "\n\tcopies: " + num_of_available_copies +
+                "\n\trating: " + rating + "\n";
     }
 }
